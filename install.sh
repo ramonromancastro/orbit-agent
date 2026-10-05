@@ -198,7 +198,7 @@ log_info "Applying restrictive system permissions (Least Privilege)..."
 # Source code tree
 chown -R root:orbit-agent "${APP_DIR}"
 find "${APP_DIR}" -type d -exec chmod o=,u=rwx,g=rx {} +
-find "${APP_DIR}" -type f -exec chmod o=,u+rw,g+r {} +
+find "${APP_DIR}" -type f -exec chmod o=,u=rwX,g=rX {} +
 
 # Data store (/var/lib/orbit-agent)
 chown -R orbit-agent:orbit-agent "${VAR_DIR}"
