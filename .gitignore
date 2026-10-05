@@ -1,0 +1,22 @@
+# Entorno virtual y temporales de Python
+venv/
+.venv/
+__pycache__/
+*.py[cod]
+
+# Binarios externos y pesados
+tailwindcss-linux-x64
+*.bin
+
+# Directorios de trabajo y temporales
+tmp/
+*.log
+
+# Datos persistentes locales si existieran
+*.sqlite3
+*.db
+
+# Editores
+.vscode/
+.idea/
+*.swp
