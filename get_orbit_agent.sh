@@ -3,8 +3,8 @@
 # Orbit Enterprise Agent - Bootstrap Installer
 #
 # Usage:
-#   sudo ./get-orbit.sh [--version <tag>] [--dir <path>]
-#   curl -sSL https://raw.githubusercontent.com/.../get-orbit-agent.sh | sudo bash -s -- --version 1.2.3
+#   sudo ./get_orbit_agent.sh [--version <tag>] [--dir <path>]
+#   curl -sSL https://raw.githubusercontent.com/.../get_orbit_agent.sh | sudo bash -s -- --version 1.2.3
 # ==============================================================================
 
 set -euo pipefail
@@ -44,15 +44,15 @@ display_help() {
 Orbit Enterprise Agent - Bootstrap Installer
 
 Usage:
-  sudo ./get-orbit.sh [OPTIONS]
+  sudo ./get_orbit_agent.sh [OPTIONS]
 
 Options:
   -v, --version <tag>    Specify release tag (e.g., 1.2.3). Default: latest
   -h, --help             Display this help message
 
 Examples:
-  sudo ./get-orbit.sh --version 1.0.0
-  sudo ./get-orbit.sh --version latest
+  sudo ./get_orbit_agent.sh --version 1.0.0
+  sudo ./get_orbit_agent.sh --version latest
 EOF
     exit 0
 }
