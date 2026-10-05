@@ -58,6 +58,7 @@ EOF
 }
 
 # --- CLI ARGUMENT PARSING (NOMINAL) ---
+PASSTHROUGH_ARGS=()
 while [[ $# -gt 0 ]]; do
     case "$1" in
         -v|--version)
@@ -72,8 +73,9 @@ while [[ $# -gt 0 ]]; do
             display_help
             ;;
         *)
-            log_error "Unknown option: $1"
-            display_help
+            # Argumentos no propios (como --server o --token): guardarlos para install.sh
+            PASSTHROUGH_ARGS+=("$1")
+            shift
             ;;
     esac
 done
@@ -139,7 +141,7 @@ fi
 
 log_info "Executing internal system provisioner (install.sh)..."
 chmod +x "${INSTALL_SCRIPT}"
-"${INSTALL_SCRIPT}"
+"${INSTALL_SCRIPT}" "${PASSTHROUGH_ARGS[@]}"
 
 printf "\n"
 log_success "Orbit Enterprise Agent bootstrap finished successfully."
