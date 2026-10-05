@@ -219,6 +219,7 @@ After=network.target
 Type=oneshot
 User=orbit-agent
 Group=orbit-agent
+NoNewPrivileges=no
 
 # Load environment variables (supports both Debian and RHEL paths)
 EnvironmentFile=-/etc/default/orbit-agent

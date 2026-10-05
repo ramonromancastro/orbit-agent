@@ -256,7 +256,7 @@ def _check_updates_rhel(pkg_mgr: str) -> List[Dict[str, Any]]:
 
     try:
         sec_res = subprocess.run(
-            [pkg_mgr, "updateinfo", "list", "--security", "-q"],
+            ["sudo", "-n", pkg_mgr, "updateinfo", "list", "--security", "-q"],
             stdout=subprocess.PIPE,
             stderr=subprocess.PIPE,
             universal_newlines=True,
@@ -280,7 +280,7 @@ def _check_updates_rhel(pkg_mgr: str) -> List[Dict[str, Any]]:
 
     try:
         gen_res = subprocess.run(
-            [pkg_mgr, "check-update", "-q"],
+            ["sudo", "-n", pkg_mgr, "check-update", "-q"],
             stdout=subprocess.PIPE,
             stderr=subprocess.PIPE,
             universal_newlines=True,
@@ -328,7 +328,7 @@ def _check_updates_debian() -> List[Dict[str, Any]]:
     arch = "amd64"
     try:
         dpkg_arch = subprocess.run(
-            ["dpkg", "--print-architecture"],
+            ["sudo", "-n", "/usr/bin/dpkg", "--print-architecture"],
             stdout=subprocess.PIPE,
             universal_newlines=True,
             timeout=5
@@ -340,13 +340,13 @@ def _check_updates_debian() -> List[Dict[str, Any]]:
 
     # Refresco con timeout
     try:
-        subprocess.run(["apt-get", "update", "-qq"], stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL, env=clean_env, timeout=90)
+        subprocess.run(["sudo", "-n", "/usr/bin/apt-get", "update", "-qq"], stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL, env=clean_env, timeout=90)
     except subprocess.TimeoutExpired:
         print("[WARN] Timeout updating apt repositories", file=sys.stderr)
 
     try:
         res = subprocess.run(
-            ["apt-get", "-s", "upgrade"],
+            ["sudo", "-n", "/usr/bin/apt-get", "-s", "upgrade"],
             stdout=subprocess.PIPE,
             stderr=subprocess.PIPE,
             universal_newlines=True,
@@ -407,7 +407,7 @@ def check_needs_reboot() -> bool:
     nr_path = shutil.which("needs-restarting")
     if nr_path:
         try:
-            res = subprocess.run([nr_path, "-r"], stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL, timeout=15)
+            res = subprocess.run(["sudo", "-n", nr_path, "-r"], stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL, timeout=15)
             if res.returncode == 1:
                 return True
         except Exception:
@@ -433,7 +433,7 @@ def execute_task(task: Dict[str, Any]) -> Tuple[str, str]:
     if action == "reboot":
         try:
             res = subprocess.run(
-                ["shutdown", "-r", "+1", "Orbit Enterprise: Reboot requested by administrator"],
+                ["sudo", "-n", "/usr/bin/shutdown", "-r", "+1", "Orbit Enterprise: Reboot requested by administrator"],
                 stdout=subprocess.PIPE,
                 stderr=subprocess.STDOUT,
                 universal_newlines=True,
@@ -456,11 +456,11 @@ def execute_task(task: Dict[str, Any]) -> Tuple[str, str]:
         
         cmd: List[str] = []
         if shutil.which("dnf"):
-            cmd = ["dnf", "update", "-y"] + safe_pkgs
+            cmd = ["sudo", "-n", "/usr/bin/dnf", "update", "-y"] + safe_pkgs
         elif shutil.which("yum"):
-            cmd = ["yum", "update", "-y"] + safe_pkgs
+            cmd = ["sudo", "-n", "/usr/bin/yum", "update", "-y"] + safe_pkgs
         elif shutil.which("apt-get"):
-            cmd = ["apt-get", "install", "--only-upgrade", "-y"] + safe_pkgs
+            cmd = ["sudo", "-n", "/usr/bin/apt-get", "install", "--only-upgrade", "-y"] + safe_pkgs
 
         if cmd and safe_pkgs:
             try:
@@ -505,7 +505,7 @@ def send_node_report(reboot_in_progress: bool = False) -> None:
     needs_reboot = False if reboot_in_progress else check_needs_reboot()
 
     report = {
-        "APP_VERSION": APP_VERSION,
+        "agent_version": APP_VERSION,
         "fqdn": get_true_hostname(),
         "ip_address": get_ip_address(),
         "timestamp": time.strftime("%Y-%m-%dT%H:%M:%SZ", time.gmtime()),
@@ -555,7 +555,4 @@ def main() -> None:
 
 
 if __name__ == "__main__":
-    if os.geteuid() != 0:
-        print("[ERROR] The Orbit Enterprise agent must run as root to manage patches.", file=sys.stderr)
-        sys.exit(1)
     main()
