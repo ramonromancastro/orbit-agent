@@ -1,4 +1,10 @@
 # Orbit Enterprise Agent
+
+![GitHub Release](https://img.shields.io/github/v/release/ramonromancastro/orbit-agent?include_prereleases&color=blue&sort=date)
+![Downloads](https://img.shields.io/github/downloads/ramonromancastro/orbit-agent/total?color=brightgreen)
+![GitHub License](https://img.shields.io/github/license/ramonromancastro/orbit-agent)
+![Python](https://img.shields.io/badge/Python-3.6%2B-blueviolet)
+
 **Orbit Enterpise Agent** (`orbit-agent`) is a lightweight, low-footprint Linux client agent engineered to communicate with **Orbit Enterprise Server**. It runs locally on managed endpoints to collect hardware/OS telemetry, inspect security updates and errata (RPM/DEB), schedule unattended patching tasks, and monitor pending system reboots without requiring inbound network ports or persistent SSH keys.
 
 ## 📋 Table of Contents
