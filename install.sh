@@ -250,13 +250,13 @@ Description=Timer for Orbit Enterprise Agent
 
 [Timer]
 # Wait 2 minutes after system boot before the first execution
-OnBootSec=2min
+OnBootSec=5min
 
-# Execute the agent every 10 minutes
-OnUnitActiveSec=10min
+# Execute the agent every 60 minutes
+OnUnitActiveSec=60min
 
 # Add a random delay of up to 30 seconds to distribute network load
-RandomizedDelaySec=30
+RandomizedDelaySec=60
 Unit=orbit-agent.service
 
 [Install]
