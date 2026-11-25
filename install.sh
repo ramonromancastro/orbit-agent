@@ -266,7 +266,7 @@ EOF
 chmod 0644 "${TIMER_FILE}"
 
 systemctl daemon-reload
-systemctl enable orbit-agent.service
+systemctl enable --now orbit-agent.timer
 log_success "Service unit installed and enabled."
 
 printf "\n"
